@@ -17,7 +17,7 @@ const userMessageCounts = {};
 const maxMessagesPerMinute = 3;
 
 // Set the URL to the Vercel deployment URL
-const webhookUrl = "telegram-be98ksa4s-sifat2626.vercel.app/api/webhook";
+const webhookUrl = "telegram-be98ksa4s-sifat2626.vercel.app";
 bot.getWebHookInfo().then(console.log);
 
 // Set the webhook
