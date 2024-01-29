@@ -6,6 +6,10 @@ require("dotenv").config(); // Load environment variables from .env file
 // Create an Express app
 const app = express();
 
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+
 // Replace the value below with the Telegram bot token you receive from @BotFather
 const token = process.env.TOKEN;
 
@@ -19,16 +23,6 @@ const userMessageCounts = {};
 const maxMessagesPerMinute = 3;
 
 // Set the URL to the Vercel deployment URL (replace with your actual deployment URL)
-const webhookUrl = "https://telegram-bot-five-brown.vercel.app/api/webhook";
-
-// Remove the unnecessary setWebHook call (it's already set in the next line)
-// bot.setWebHook(webhookUrl);
-
-// Get webhook information and log it
-bot.getWebHookInfo().then(console.log);
-
-// Set the webhook URL for the Telegram bot
-bot.setWebHook(webhookUrl);
 
 // Handle new chat members event
 bot.on("new_chat_members", (msg) => {
@@ -80,17 +74,3 @@ setInterval(() => {
     }
   }
 }, 60 * 1000); // Reset every 1 minute
-
-// Handle incoming webhook requests at the specified route
-app.post("/api/webhook", (req, res) => {
-  // Handle incoming webhook requests here (if needed)
-  // ...
-
-  res.status(200).json({ success: true }); // Respond to the webhook request with a 200 OK status
-});
-
-// Start the server on the specified port (use the PORT environment variable if available, otherwise default to 3000)
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
