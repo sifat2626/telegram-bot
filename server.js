@@ -21,6 +21,9 @@ const maxMessagesPerMinute = 3;
 // Set the URL to the Vercel deployment URL (replace with your actual deployment URL)
 const webhookUrl = "https://telegram-bot-five-brown.vercel.app/api/webhook";
 
+// Remove the unnecessary setWebHook call (it's already set in the next line)
+// bot.setWebHook(webhookUrl);
+
 // Get webhook information and log it
 bot.getWebHookInfo().then(console.log);
 
