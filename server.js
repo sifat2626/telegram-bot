@@ -10,6 +10,10 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
+const port = 3000;
+app.listen(port, () => {
+  console.log(`server running at port ${port}`);
+});
 // Replace the value below with the Telegram bot token you receive from @BotFather
 const token = process.env.TOKEN;
 
