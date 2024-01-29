@@ -1,5 +1,7 @@
+const express = require("express");
 const TelegramBot = require("node-telegram-bot-api");
 require("dotenv").config();
+const app = express();
 
 // replace the value below with the Telegram token you receive from @BotFather
 const token = process.env.TOKEN;
@@ -13,6 +15,12 @@ const userMessageCounts = {};
 
 // Set the maximum number of messages allowed per user per minute
 const maxMessagesPerMinute = 3;
+
+// Set the URL to the Vercel deployment URL
+const webhookUrl = "https://your-vercel-app.vercel.app/api";
+
+// Set the webhook
+bot.setWebHook(webhookUrl);
 
 // Listen for new members joining the group
 bot.on("new_chat_members", (msg) => {
@@ -65,3 +73,5 @@ setInterval(() => {
     }
   }
 }, 60 * 1000); // Reset every 1 minute
+
+module.exports = app;
