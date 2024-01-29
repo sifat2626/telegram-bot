@@ -1,13 +1,15 @@
-const express = require("express");
-const TelegramBot = require("node-telegram-bot-api");
-require("dotenv").config();
+// Import necessary libraries
+const express = require("express"); // Express for creating the web server
+const TelegramBot = require("node-telegram-bot-api"); // Node.js wrapper for Telegram Bot API
+require("dotenv").config(); // Load environment variables from .env file
+
+// Create an Express app
 const app = express();
 
-// replace the value below with the Telegram token you receive from @BotFather
+// Replace the value below with the Telegram bot token you receive from @BotFather
 const token = process.env.TOKEN;
-// console.log(token);
 
-// Create a bot that uses 'polling' to fetch new updates
+// Create a Telegram bot instance using 'polling' to fetch new updates
 const bot = new TelegramBot(token, { polling: true });
 
 // Dictionary to track user message counts
@@ -16,37 +18,38 @@ const userMessageCounts = {};
 // Set the maximum number of messages allowed per user per minute
 const maxMessagesPerMinute = 3;
 
-// Set the URL to the Vercel deployment URL
-const webhookUrl = "telegram-be98ksa4s-sifat2626.vercel.app";
+// Set the URL to the Vercel deployment URL (replace with your actual deployment URL)
+const webhookUrl = "https://telegram-bot-five-brown.vercel.app/api/webhook";
+
+// Get webhook information and log it
 bot.getWebHookInfo().then(console.log);
 
-// Set the webhook
+// Set the webhook URL for the Telegram bot
 bot.setWebHook(webhookUrl);
 
-// Listen for new members joining the group
+// Handle new chat members event
 bot.on("new_chat_members", (msg) => {
-  const chatId = msg.chat.id;
-  const newMembers = msg.new_chat_members;
-  const chatType = msg.chat.type;
+  const chatId = msg.chat.id; // Get the chat ID
+  const newMembers = msg.new_chat_members; // Get the new members
 
-  // Greet new members
+  // Greet each new member
   newMembers.forEach((member) => {
     bot.sendMessage(chatId, `Welcome to the group, ${member.first_name}! 👋`);
   });
 });
 
-// Listen for incoming messages
+// Handle incoming messages event
 bot.on("message", (msg) => {
-  const chatId = msg.chat.id;
-  const userId = msg.from && msg.from.id;
+  const chatId = msg.chat.id; // Get the chat ID
+  const userId = msg.from && msg.from.id; // Get the user ID
 
   // Flood protection logic
   if (userId) {
-    // Check if user is in the dictionary, if not, add them
+    // Check if the user is in the dictionary, if not, add them
     if (!userMessageCounts[userId]) {
       userMessageCounts[userId] = 1;
     } else {
-      // If user is in the dictionary, increment their message count
+      // If the user is in the dictionary, increment their message count
       userMessageCounts[userId] += 1;
     }
 
@@ -75,4 +78,16 @@ setInterval(() => {
   }
 }, 60 * 1000); // Reset every 1 minute
 
-module.exports = app;
+// Handle incoming webhook requests at the specified route
+app.post("/api/webhook", (req, res) => {
+  // Handle incoming webhook requests here (if needed)
+  // ...
+
+  res.sendStatus(200); // Respond to the webhook request with a 200 OK status
+});
+
+// Start the server on the specified port (use the PORT environment variable if available, otherwise default to 3000)
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
