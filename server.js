@@ -82,7 +82,8 @@ setInterval(() => {
 app.post("/api/webhook", (req, res) => {
   // Handle incoming webhook requests here (if needed)
   // ...
-  res.status(200).json(token); // Respond to the webhook request with a 200 OK status
+
+  res.status(200).json({ success: true }); // Respond to the webhook request with a 200 OK status
 });
 
 // Start the server on the specified port (use the PORT environment variable if available, otherwise default to 3000)
